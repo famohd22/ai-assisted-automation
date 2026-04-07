@@ -15,8 +15,9 @@ export class SwaggerPetstorePage {
     this.deletePetEndpoint = page.locator('#operations-pet-deletePet');
     
     // Common UI elements
-    this.tryItOutButton = page.locator('.try-out__btn');
-    this.executeButton = page.locator('.execute');
+    this.tryItOutButton = page.locator('.try-out__btn:not(.cancel)');
+    this.executeButtonAdd = page.locator('.execute');
+    this.executeButtonGet = page.locator('#operations-pet-getPetById');
     this.requestBodyTextarea = page.locator('.body-param__text');
     this.responseCode = page.locator('.response-col_status');
     this.responseBody = page.locator('.response-col_description pre');
@@ -66,7 +67,7 @@ export class SwaggerPetstorePage {
     await this.requestBodyTextarea.fill(JSON.stringify(petData, null, 2));
     
     // Step 4: Execute the request
-    await this.executeButton.click();
+    await this.executeButtonAdd.click();
     
     // Step 5: Wait for response
     await this.page.waitForTimeout(1500);
@@ -91,6 +92,25 @@ export class SwaggerPetstorePage {
     } catch (e) {
       return responseText;
     }
+  }
+
+    async getPetById(petId) {
+    // Expand the GET endpoint
+    await this.getPetByIdEndpoint.scrollIntoViewIfNeeded();
+    await this.getPetByIdEndpoint.click();
+    await this.page.waitForTimeout(500);
+    
+    // Click Try it out
+    await this.tryItOutButton.click();
+    
+    // Fill pet ID
+    await this.page.locator('input[placeholder="petId"]').fill(petId.toString());
+    
+    // Execute
+    await this.executeButtonGet.click();
+    await this.page.waitForTimeout(1000);
+    
+    return await this.getResponseBody();
   }
 
   async takeScreenshot(name) {

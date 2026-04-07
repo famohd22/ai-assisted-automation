@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import 'dotenv/config';
 
 /**
  * Read environment variables from file.
@@ -23,17 +24,47 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   testIgnore: [
-    'tests/example.spec.js', // Add the path to the test file you want to ignore
+    //'tests/example.spec.js', // Add the path to the test file you want to ignore
   ],
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['html', { outputFolder: 'playwright-report' }],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['line'],
+    ['list']
+  ],
+    // Global setup timeout
+  globalTimeout: 60 * 60 * 1000, // 1 hour
+  
+  // Test timeout
+  timeout: 30 * 1000, // 30 seconds per test
+  
+  // Expect timeout
+  expect: {
+    timeout: 5000 // 5 seconds for assertions
+  },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-     baseURL: 'https://petstore.swagger.io/',
+     baseURL: process.env.BASE_URL || 'https://petstore.swagger.io/',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    // Collect trace when retrying the failed test
+    trace: 'retain-on-failure',
+    
+    // Take screenshot on failure
+    screenshot: 'only-on-failure',
+    
+    // Record video on failure
+    video: 'retain-on-failure',
+    
+    // Action timeout
+    actionTimeout: 15000,
+    
+    // Navigation timeout
+    navigationTimeout: 30000,
+    
+    // Ignore HTTPS errors
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */
