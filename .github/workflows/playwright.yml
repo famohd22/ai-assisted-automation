@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ trunk, main ]
   schedule:
-    # Optional: Run daily at 2 AM
+    # Optional: Run daily at 2 AM mostly
     - cron: '0 2 * * *'
   workflow_dispatch:  # Allows manual triggering
 
