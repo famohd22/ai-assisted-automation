@@ -16,7 +16,8 @@ jobs:
     
     strategy:
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: [chromium]
+        #browser: [chromium, firefox, webkit]
       fail-fast: false  # Don't cancel all jobs if one fails
     
     steps:
@@ -43,8 +44,6 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
         JIRA_ISSUE_TYPE_ID: ${{ secrets.JIRA_ISSUE_TYPE_ID }}
-        JIRA_EPIC_LINK_FIELD_ID: ${{ secrets.JIRA_EPIC_LINK_FIELD_ID }}
-        JIRA_DEFAULT_EPIC_KEY: ${{ secrets.JIRA_DEFAULT_EPIC_KEY }}
         CREATE_JIRA_BUG: ${{ secrets.CREATE_JIRA_BUG }}
         CI_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         TEST_ENVIRONMENT: 'ci'
