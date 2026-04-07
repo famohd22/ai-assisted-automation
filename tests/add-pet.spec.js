@@ -29,7 +29,7 @@ test.describe('Petstore - Add Pet Tests', () => {
 
     test('should add pet and verify via GET', async ({ page }) => {
     // Create new pet
-    //const newPet = generatePetData();
+    const newPet = generatePetData();
     await petstore.addPet(newPet);
     
     // Verify response from POST
